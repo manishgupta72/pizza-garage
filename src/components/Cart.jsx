@@ -1,25 +1,60 @@
-import React from "react";
+import React, { useState } from "react";
 import { IoMdClose } from "react-icons/io";
 import ItemCard from "./ItemCard";
+import { HiMiniShoppingCart } from "react-icons/hi2";
+import { useSelector } from "react-redux";
 const Cart = () => {
+  const cartItems = useSelector((state) => state.cart.cart);
+  const [activeCart, setActiveCart] = useState(true);
   return (
-    <div className="fixed right-0 top-0 bg-white w-full  lg:w-[25vw] h-full p-5">
-      <div className="flex justify-between items-center">
-        <h1 className="font-bold text-xl text-gray-800">My Order</h1>
-        <span className="border rounded-md border-gray-300 p-1 hover:text-red-300 hover:border-red-300 font-bold cursor-pointer">
-          <IoMdClose />
-        </span>
+    <>
+      <div
+        className={`fixed right-0 top-0 bg-white w-full  lg:w-[25vw] h-full p-5 ${
+          activeCart ? "translate-x-0" : "translate-x-full"
+        } transition-all duration-500 ease-linear z-[500] `}
+      >
+        <div className="flex justify-between items-center">
+          <h1 className="font-bold text-xl text-gray-800">My Order</h1>
+          <span className="border rounded-md border-gray-300 p-1 hover:text-red-300 hover:border-red-300 font-bold cursor-pointer">
+            <IoMdClose onClick={() => setActiveCart(!activeCart)} />
+          </span>
+        </div>
+
+        {cartItems.length > 0 ? (
+          cartItems.map((food) => {
+            return (
+              <ItemCard
+                key={food.id}
+                id={food.id}
+                name={food.name}
+                img={food.img}
+                price={food.price}
+                qty={food.qty}
+              />
+            );
+          })
+        ) : (
+          <h2 className="text-xl text-center font-bold mt-10">
+            Your cart is empty
+          </h2>
+        )}
+
+        <div className="absolute bottom-0">
+          <h3 className="font-semibold text-gray-800 lg:mx-5">Items : </h3>
+          <h3 className="font-semibold text-gray-800 lg:mx-5">
+            Total Amount :{" "}
+          </h3>
+          <hr className=" w-[90vw] lg:w-[20vw] lg:mx-5 my-2" />
+          <button className="bg-green-500 lg:mx-5 font-bold text-white py-2 rounded-lg  w-[90vw] lg:w-[20vw] mb-5">
+            Checkout
+          </button>
+        </div>
       </div>
-      <ItemCard/>
-      <ItemCard/>
-      <ItemCard/>
-      <div className="absolute bottom-0">
-        <h3 className="font-semibold text-gray-800 lg:mx-5">Items : </h3>
-        <h3 className="font-semibold text-gray-800 lg:mx-5">Total Amount : </h3>
-        <hr className=" w-[90vw] lg:w-[20vw] lg:mx-5 my-2"/>
-        <button className="bg-green-500 lg:mx-5 font-bold text-white py-2 rounded-lg  w-[90vw] lg:w-[20vw] mb-5">Checkout</button>
-      </div>
-    </div>
+      <HiMiniShoppingCart
+        onClick={() => setActiveCart(!activeCart)}
+        className="fixed bottom-6 right-4 text-5xl rounded-full cursor-pointer bg-white shadow-md p-3 "
+      />
+    </>
   );
 };
 

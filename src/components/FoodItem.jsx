@@ -9,6 +9,7 @@ const FoodItem = () => {
         return (
           <FoodCard
             key={index}
+            id={food.id}
             name={food.name}
             img={food.img}
             rating={food.rating}
