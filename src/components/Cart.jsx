@@ -6,6 +6,8 @@ import { useSelector } from "react-redux";
 const Cart = () => {
   const cartItems = useSelector((state) => state.cart.cart);
   const [activeCart, setActiveCart] = useState(true);
+  const totalQty=cartItems.reduce((totalQty,item)=>totalQty+item.qty,0);
+  const totalPrice=cartItems.reduce((total,item)=>total+item.qty*item.price,0)
   return (
     <>
       <div
@@ -40,9 +42,9 @@ const Cart = () => {
         )}
 
         <div className="absolute bottom-0">
-          <h3 className="font-semibold text-gray-800 lg:mx-5">Items : </h3>
+          <h3 className="font-semibold text-gray-800 lg:mx-5">Items : {totalQty} </h3>
           <h3 className="font-semibold text-gray-800 lg:mx-5">
-            Total Amount :{" "}
+            Total Amount :{totalPrice}
           </h3>
           <hr className=" w-[90vw] lg:w-[20vw] lg:mx-5 my-2" />
           <button className="bg-green-500 lg:mx-5 font-bold text-white py-2 rounded-lg  w-[90vw] lg:w-[20vw] mb-5">
@@ -52,7 +54,7 @@ const Cart = () => {
       </div>
       <HiMiniShoppingCart
         onClick={() => setActiveCart(!activeCart)}
-        className="fixed bottom-6 right-4 text-5xl rounded-full cursor-pointer bg-white shadow-md p-3 "
+        className={`fixed bottom-6 right-4 text-5xl rounded-full cursor-pointer bg-white shadow-md p-3 ${totalQty>0&&"animate-bounce delay-500 transition-all"} `}
       />
     </>
   );
