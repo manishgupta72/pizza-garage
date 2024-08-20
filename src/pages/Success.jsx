@@ -7,7 +7,7 @@ const Success = () => {
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);
-    }, 3000);
+    }, 1000);
   }, []);
   return (
     <div className="flex flex-col items-center justify-center h-screen">

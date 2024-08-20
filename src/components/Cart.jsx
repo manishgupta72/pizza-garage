@@ -1,18 +1,27 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { IoMdClose } from "react-icons/io";
 import ItemCard from "./ItemCard";
 import { HiMiniShoppingCart } from "react-icons/hi2";
 import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { setToCart } from "../redux/CartSlice";
 const Cart = () => {
+  const dispatch = useDispatch();
   const cartItems = useSelector((state) => state.cart.cart);
   const [activeCart, setActiveCart] = useState(false);
+  const [empty, setEmpty] = useState(true);
   const totalQty = cartItems.reduce((totalQty, item) => totalQty + item.qty, 0);
   const totalPrice = cartItems.reduce(
     (total, item) => total + item.qty * item.price,
     0
   );
   const navigate = useNavigate();
+  const setCartEmpty = () => {
+    setTimeout(() => {
+      dispatch(setToCart([]));
+    }, 3000);
+  };
   return (
     <>
       <div
@@ -48,14 +57,17 @@ const Cart = () => {
 
         <div className="absolute bottom-0">
           <h3 className="font-semibold text-gray-800 lg:mx-5">
-            Items : {totalQty}{" "}
+            Items : {totalQty}
           </h3>
           <h3 className="font-semibold text-gray-800 lg:mx-5">
             Total Amount :{totalPrice}
           </h3>
           <hr className=" w-[90vw] lg:w-[20vw] lg:mx-5 my-2" />
           <button
-            onClick={() => navigate("/success")}
+            onClick={() => {
+              navigate("/success");
+              setCartEmpty();
+            }}
             className="bg-green-500 lg:mx-5 font-bold text-white py-2 rounded-lg  w-[90vw] lg:w-[20vw] mb-5"
           >
             Checkout
