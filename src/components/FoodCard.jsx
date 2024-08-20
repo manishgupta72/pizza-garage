@@ -2,7 +2,7 @@ import React from "react";
 import { MdStar } from "react-icons/md";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../redux/CartSlice";
-const FoodCard = ({ id, img, name, price, rating, desc }) => {
+const FoodCard = ({ id, img, name, price, rating, desc, handleToast }) => {
   const dispatch = useDispatch();
   return (
     <div className="font-bold w-[250px] p-5 bg-white flex flex-col rounded-lg gap-3">
@@ -23,10 +23,11 @@ const FoodCard = ({ id, img, name, price, rating, desc }) => {
         <button
           onClick={() => {
             dispatch(addToCart({ id, name, price, rating, qty: 1, img }));
+            handleToast(name);
           }}
           className="p-2 text-white bg-green-500 hover:bg-green-600 rounded-lg text-sm"
         >
-          Add to card
+          Add to cart
         </button>
       </div>
     </div>
